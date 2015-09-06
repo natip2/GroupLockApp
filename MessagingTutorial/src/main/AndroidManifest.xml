@@ -28,6 +28,7 @@
         <activity android:name=".MessagingActivity"
                   android:screenOrientation="portrait">
         </activity>
+        <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/ic_launcher"/>
     </application>
 
 </manifest>
