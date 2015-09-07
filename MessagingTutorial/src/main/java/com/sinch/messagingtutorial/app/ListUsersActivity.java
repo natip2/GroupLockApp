@@ -142,7 +142,7 @@ public class ListUsersActivity extends Activity {
 
     @Override
     public void onResume() {
-//        setConversationsList();
+        setConversationsList();
         super.onResume();
     }
 }
