@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.sinch.android.rtc.PushPair;
@@ -62,6 +63,24 @@ public class MessagingActivity extends Activity {
                 sendMessage();
             }
         });
+
+        findViewById(R.id.pushBt).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendPush();
+            }
+        });
+
+
+    }
+
+    private void sendPush() {
+        ParsePush push = new ParsePush();
+        Toast.makeText(this, recipientId, Toast.LENGTH_LONG).show();
+
+        push.setChannel("nexus5");
+        push.setMessage("The Giants just scored! It's now 2-2 against the Mets.");
+        push.sendInBackground();
     }
 
     //get previous messages from parse & display

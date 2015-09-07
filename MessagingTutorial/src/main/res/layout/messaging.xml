@@ -9,8 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:transcriptMode="alwaysScroll"
-            android:layout_above="@+id/divider"
-            android:padding="0dip"
+        android:padding="0dip"
             android:divider="@null"
             android:dividerHeight="0dp" android:stackFromBottom="true" tools:listitem="@layout/message_left"/>
     
@@ -51,6 +50,17 @@
                 android:layout_alignParentRight="true"
                 android:layout_margin="4dp"
                 android:background="@drawable/button_send" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="pushBt"
+            android:id="@+id/pushBt"
+            android:layout_alignBottom="@+id/sendButton"
+            android:layout_alignRight="@+id/messageBodyField"
+            android:layout_alignEnd="@+id/messageBodyField"
+            android:layout_marginRight="112dp"
+            android:layout_marginEnd="112dp" />
     </RelativeLayout>
 
 

@@ -16,7 +16,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
-import com.parse.ParseException;
+import com.parse.ParseInstallation;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -28,16 +29,23 @@ public class ListUsersActivity extends Activity {
     private String currentUserId;
     private ArrayAdapter<String> namesArrayAdapter;
     private ArrayList<String> names;
+    private ArrayList<Integer> status; //0 - blank, 1-push send, 2- push reject, 3-push accept
     private ListView usersListView;
     private Button logoutButton;
     private ProgressDialog progressDialog;
     private BroadcastReceiver receiver = null;
+    final private int JUST_PICK = 0;
+    final private int PUSH_SEND = 1;
+    final private int PUSH_RECECT = 2;
+    final private int PUSH_ACCEPT = 3;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_users);
-
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        ParsePush.subscribeInBackground(ParseUser.getCurrentUser().getUsername());
         showSpinner();
 
         logoutButton = (Button) findViewById(R.id.logoutButton);
@@ -56,6 +64,7 @@ public class ListUsersActivity extends Activity {
     private void setConversationsList() {
         currentUserId = ParseUser.getCurrentUser().getObjectId();
         names = new ArrayList<String>();
+        status = new ArrayList<Integer>();
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereNotEqualTo("objectId", currentUserId);
@@ -64,6 +73,7 @@ public class ListUsersActivity extends Activity {
                 if (e == null) {
                     for (int i=0; i<userList.size(); i++) {
                         names.add(userList.get(i).getUsername().toString());
+                        status.add(JUST_PICK);
                     }
 
                     usersListView = (ListView)findViewById(R.id.usersListView);
@@ -87,6 +97,8 @@ public class ListUsersActivity extends Activity {
             }
         });
     }
+
+
 
     //open a conversation with one person
     public void openConversation(ArrayList<String> names, int pos) {
@@ -130,7 +142,7 @@ public class ListUsersActivity extends Activity {
 
     @Override
     public void onResume() {
-        setConversationsList();
+//        setConversationsList();
         super.onResume();
     }
 }

@@ -3,16 +3,15 @@ package com.sinch.messagingtutorial.app;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.parse.LogInCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.SignUpCallback;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.parse.LogInCallback;
+import com.parse.ParsePush;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 public class LoginActivity extends Activity {
 
@@ -34,6 +33,7 @@ public class LoginActivity extends Activity {
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
+
             startActivity(intent);
             startService(serviceIntent);
         }
@@ -44,7 +44,6 @@ public class LoginActivity extends Activity {
         signUpButton = (Button) findViewById(R.id.signupButton);
         usernameField = (EditText) findViewById(R.id.loginUsername);
         passwordField = (EditText) findViewById(R.id.loginPassword);
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,6 +53,10 @@ public class LoginActivity extends Activity {
                 ParseUser.logInInBackground(username, password, new LogInCallback() {
                     public void done(ParseUser user, com.parse.ParseException e) {
                         if (user != null) {
+                            ParsePush.subscribeInBackground(username);
+                            Toast.makeText(getApplicationContext(),
+                                    "subscribe0 " +username
+                                    , Toast.LENGTH_LONG).show();
                             startActivity(intent);
                             startService(serviceIntent);
                         } else {
@@ -80,6 +83,11 @@ public class LoginActivity extends Activity {
                 user.signUpInBackground(new SignUpCallback() {
                     public void done(com.parse.ParseException e) {
                         if (e == null) {
+                            ParsePush.subscribeInBackground(username);
+                            Toast.makeText(getApplicationContext(),
+                                    "subscribe1 " +username
+                                    , Toast.LENGTH_LONG).show();
+
                             startActivity(intent);
                             startService(serviceIntent);
                         } else {
